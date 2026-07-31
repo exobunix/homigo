@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Homigo Vendor",
+    "slug": "homigo-vendor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#2563eb"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "urbanprox.com",
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "backgroundColor": "#2563eb"
+      }
+    },
+    "web": {},
+    "sdkVersion": "54.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "plugins": [
+      "expo-build-properties",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "color": "#6366f1",
+          "defaultChannel": "default"
+        }
+      ],
+      "@react-native-firebase/app"
+    ]
+  }
+}

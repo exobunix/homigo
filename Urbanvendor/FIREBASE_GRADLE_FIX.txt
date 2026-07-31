@@ -1,0 +1,19 @@
+// Workaround for expo-firebase-core compileSdk issue
+// Add this to android/build.gradle in the allprojects block
+
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+  }
+  
+  // Fix for expo-firebase-core missing compileSdk
+  afterEvaluate { project ->
+    if (project.name == 'expo-firebase-core') {
+      android {
+        compileSdkVersion 34
+      }
+    }
+  }
+}

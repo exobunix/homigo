@@ -1,0 +1,31 @@
+import { DefaultTheme } from 'react-native-paper';
+
+export const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#6366f1',
+    primaryContainer: '#e0e7ff',
+    secondary: '#8b5cf6',
+    secondaryContainer: '#f3e8ff',
+    tertiary: '#06b6d4',
+    tertiaryContainer: '#cffafe',
+    accent: '#f59e0b',
+    background: '#f8fafc',
+    surface: '#ffffff',
+    surfaceVariant: '#f1f5f9',
+    text: '#1e293b',
+    onSurface: '#334155',
+    success: '#10b981',
+    successContainer: '#d1fae5',
+    warning: '#f59e0b',
+    warningContainer: '#fef3c7',
+    error: '#ef4444',
+    errorContainer: '#fee2e2',
+    info: '#3b82f6',
+    infoContainer: '#dbeafe',
+    outline: '#e2e8f0',
+    shadow: '#000000',
+  },
+  roundness: 12,
+};

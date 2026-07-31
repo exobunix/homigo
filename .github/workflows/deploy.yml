@@ -1,0 +1,29 @@
+name: 🚀 Remote Deploy to VPS (Ubuntu)
+
+on:
+  push:
+    branches:
+      - main  # Deployment triggers on push to the main branch
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Deploy over SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}      # VPS IP (72.61.172.182)
+          username: ${{ secrets.SSH_USER }}  # root
+          key: ${{ secrets.SSH_KEY }}       # Your SSH Private Key
+          port: 22
+          script: |
+            echo "🏁 Remote Deployment Initialized..."
+            cd /var/www/urbanprox
+            chmod +x deploy.sh
+            ./deploy.sh
+            echo "✅ Deployment Process Finished!"

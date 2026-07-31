@@ -1,0 +1,29 @@
+{
+    "project_info": {
+        "project_number": "1032278721160",
+        "project_id": "urbanprox-7aa0d",
+        "storage_bucket": "urbanprox-7aa0d.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:1032278721160:android:f8225017278d1566ca153d",
+                "android_client_info": {
+                    "package_name": "urbanprox.com"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyCGqyhcRSRFkN-YPfTAZmsWvF9s_yzxqvQ"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

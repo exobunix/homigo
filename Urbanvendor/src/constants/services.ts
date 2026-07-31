@@ -1,0 +1,17 @@
+export const MASTER_SERVICES = [
+    { id: '1', name: 'Plumbing', price: '₹499', image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500', icon: 'pipe-wrench', color: '#3b82f6' },
+    { id: '2', name: 'Electrical', price: '₹399', image: 'https://images.unsplash.com/photo-1621905252507-b35a5f903748?w=500', icon: 'lightning-bolt', color: '#f59e0b' },
+    { id: '3', name: 'Cleaning', price: '₹999', image: 'https://images.unsplash.com/photo-1581578731117-104f2a41272c?w=500', icon: 'broom', color: '#10b981' },
+    { id: '4', name: 'Painting', price: '₹1499', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500', icon: 'format-paint', color: '#ef4444' },
+    { id: '5', name: 'Carpentry', price: '₹599', image: 'https://images.unsplash.com/photo-1621905252507-b35a5f903748?w=500', icon: 'hammer', color: '#8b5cf6' },
+    { id: '6', name: 'AC Repair', price: '₹499', image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500', icon: 'air-conditioner', color: '#06b6d4' },
+    { id: '7', name: 'Pest Control', price: '₹899', image: 'https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=500', icon: 'bug', color: '#a855f7' },
+    { id: '8', name: 'Home Salon', price: '₹799', image: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=500', icon: 'face-woman', color: '#ec4899' },
+    { id: '9', name: 'Gardening', price: '₹399', image: 'https://images.unsplash.com/photo-1416879156457-1820a08122b1?w=500', icon: 'flower', color: '#22c55e' },
+    { id: '10', name: 'Car Wash', price: '₹599', image: 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=500', icon: 'car-wash', color: '#3b82f6' },
+    { id: '11', name: 'Laundry', price: '₹299', image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb8f?w=500', icon: 'washing-machine', color: '#6366f1' },
+    { id: '12', name: 'Appliance Repair', price: '₹449', image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a782?w=500', icon: 'tools', color: '#f97316' },
+    { id: '13', name: 'Moving & Packing', price: '₹2999', image: 'https://images.unsplash.com/photo-1600518464441-9154a4dea21b?w=500', icon: 'truck-delivery', color: '#14b8a6' },
+    { id: '14', name: 'Disinfection', price: '₹699', image: 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=500', icon: 'spray-bottle', color: '#0ea5e9' },
+    { id: '15', name: 'Smart Home', price: '₹999', image: 'https://images.unsplash.com/photo-1558002038-1091a166111c?w=500', icon: 'home-automation', color: '#8b5cf6' },
+];
