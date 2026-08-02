@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const Service = require('../models/Service');
 const Vendor = require('../models/Vendor');
 const Testimonial = require('../models/Testimonial');
+const bcrypt = require('bcryptjs');
 
 const MASTER_SERVICES = [
     { id: '1', name: 'Plumbing', icon: 'pipe-wrench', color: '#3b82f6', basePrice: 499, image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800' },
@@ -189,8 +190,16 @@ const seedData = async () => {
             });
         }
 
-        await Vendor.insertMany([...vendors, ...allServiceVendors]);
-        console.log('✅ Seeded vendors (including 10 all-service online vendors) successfully!');
+        const salt = await bcrypt.genSalt(10);
+        const defaultPasswordHash = await bcrypt.hash('123456', salt);
+
+        const allVendors = [...vendors, ...allServiceVendors].map(v => ({
+            ...v,
+            passwordHash: defaultPasswordHash
+        }));
+
+        await Vendor.insertMany(allVendors);
+        console.log('✅ Seeded vendors (including 10 all-service online vendors with default password "123456") successfully!');
         process.exit(0);
     } catch (error) {
         console.error('Error seeding data:', error);
