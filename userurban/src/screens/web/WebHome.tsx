@@ -1633,7 +1633,7 @@ const styles = StyleSheet.create({
         maxWidth: 1200,
     },
     spotlightCard: {
-        width: 200, // Wider
+        width: 175, // Adjusted to fit all 6 items in one row on desktop
         height: 220, // Taller
         borderRadius: borderRadius.l,
         padding: spacing.l,
