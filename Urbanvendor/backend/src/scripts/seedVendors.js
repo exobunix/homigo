@@ -147,8 +147,50 @@ const seedData = async () => {
             }
         ];
 
-        await Vendor.insertMany(vendors);
-        console.log('✅ Seeded vendors with services successfully!');
+        // Generate 10 all-service online vendors around Dadri/Noida
+        const allServiceVendors = [];
+        const vendorNames = [
+            "Vikram Singh", "Sunil Yadav", "Anil Kumar", "Sanjay Dutt", "Vijay Mallya",
+            "Harsh Vardhan", "Manish Pandey", "Deepak Chahar", "Ravi Shastri", "Suresh Raina"
+        ];
+        
+        for (let i = 0; i < vendorNames.length; i++) {
+            const servicesForVendor = MASTER_SERVICES.map(srv => ({
+                id: `s-${srv.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${i}`,
+                name: srv.name,
+                active: true,
+                price: srv.basePrice,
+                description: `Professional ${srv.name} services including setup, diagnostics, and repairs.`
+            }));
+
+            // Dadri coordinates are around lat 28.5672, lon 77.5538. Let's vary them slightly.
+            const latOffset = (Math.random() - 0.5) * 0.05;
+            const lonOffset = (Math.random() - 0.5) * 0.05;
+
+            allServiceVendors.push({
+                name: vendorNames[i],
+                phone: `999990000${i}`,
+                email: `${vendorNames[i].toLowerCase().replace(' ', '')}@homigo.com`,
+                gender: "Male",
+                isOnline: true,
+                avgRating: 4.8,
+                ratingCount: 10 + i,
+                totalJobs: 20 + i * 2,
+                services: servicesForVendor,
+                location: {
+                    latitude: 28.5672 + latOffset,
+                    longitude: 77.5538 + lonOffset,
+                    address: `Near Sector ${i + 1}, Dadri`,
+                    city: "Dadri",
+                    state: "Uttar Pradesh",
+                    pincode: "203207"
+                },
+                isVerified: true
+            });
+        }
+
+        await Vendor.insertMany([...vendors, ...allServiceVendors]);
+        console.log('✅ Seeded vendors (including 10 all-service online vendors) successfully!');
         process.exit(0);
     } catch (error) {
         console.error('Error seeding data:', error);

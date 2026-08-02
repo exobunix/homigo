@@ -127,7 +127,39 @@ exports.getAvailableVendors = async (req, res) => {
 
         // If serviceId is provided, filter vendors who have this service
         if (serviceId) {
-            query['services.id'] = serviceId;
+            try {
+                const Category = require('../models/Category');
+                const category = await Category.findById(serviceId);
+                if (category) {
+                    let mainCategory = category;
+                    // Trace up to the main category
+                    while (mainCategory.parentCategory && mainCategory.level !== 'main') {
+                        const parent = await Category.findById(mainCategory.parentCategory);
+                        if (!parent) break;
+                        mainCategory = parent;
+                    }
+
+                    const serviceNames = [category.name, mainCategory.name];
+
+                    // Standardize names
+                    if (mainCategory.name === 'Home Cleaning') serviceNames.push('Cleaning');
+                    if (mainCategory.name === 'Salon for Women' || mainCategory.name === 'Salon for Men') serviceNames.push('Home Salon');
+                    if (mainCategory.name === 'AC Repair & Service') serviceNames.push('AC Repair');
+
+                    query['$or'] = [
+                        { 'services.id': serviceId },
+                        { 'services.name': { $in: serviceNames } }
+                    ];
+                } else {
+                    query['services.id'] = serviceId;
+                }
+            } catch (err) {
+                // Fallback to literal match if ObjectId lookup fails or throws error (e.g. string ID)
+                query['$or'] = [
+                    { 'services.id': serviceId },
+                    { 'services.name': serviceId }
+                ];
+            }
         }
 
         const vendors = await Vendor.find(query).select('-passwordHash');

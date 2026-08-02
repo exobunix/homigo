@@ -214,9 +214,15 @@ const ADDONS_BY_CATEGORY = {
         { name: 'Video Doorbell - 1800', description: 'Smart doorbell installation', price: 1800, image: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=400' },
         { name: 'Wi-Fi Mesh Setup - 1500', description: 'Whole-home Wi-Fi system', price: 1500, image: 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=400' },
         { name: 'Smart Plug Installation - 500', description: 'Smart power outlet setup', price: 500, image: 'https://images.unsplash.com/photo-1621905252472-178b8e7f2f7a?w=400' },
-        { name: 'Home Automation Hub - 2500', description: 'Central smart home controller', price: 2500, image: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=400' },
         { name: 'Smart Curtain Setup - 1200', description: 'Automated curtain system', price: 1200, image: 'https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?w=400' },
     ],
+    'Gardening': [
+        { name: 'Grass Cutting - 199', description: 'Lawn mowing and trimming', price: 199, image: 'https://images.unsplash.com/photo-1533460004989-cef01064af7e?w=400' },
+        { name: 'Weeding & Pruning - 299', description: 'Removal of weeds and tree trimming', price: 299, image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400' },
+        { name: 'Soil Fertilization - 399', description: 'Applying organic compost and fertilizer', price: 399, image: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=400' },
+        { name: 'Flower Planting - 249', description: 'Planting seeds/saplings of seasonal flowers', price: 249, image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=400' },
+        { name: 'Shrub Trimming - 349', description: 'Trimming and shaping shrubs/bushes', price: 349, image: 'https://images.unsplash.com/photo-1508849789987-4e5333c12b78?w=400' }
+    ]
 };
 
 async function seedAddons() {

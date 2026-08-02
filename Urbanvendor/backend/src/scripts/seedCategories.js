@@ -518,6 +518,32 @@ const seedCategories = async () => {
                         ]
                     }
                 ]
+            },
+            'gardening': {
+                name: 'Gardening',
+                image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+                price: 399,
+                subCategories: [
+                    {
+                        name: 'Lawn Care',
+                        image: 'https://images.unsplash.com/photo-1558905619-8714c64af463?w=800',
+                        price: 299,
+                        children: [
+                            { name: 'Grass Cutting', image: 'https://images.unsplash.com/photo-1533460004989-cef01064af7e?w=800', price: 199, duration: 45 },
+                            { name: 'Weeding & Pruning', image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800', price: 299, duration: 60 },
+                            { name: 'Fertilization', image: 'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=800', price: 399, duration: 30 }
+                        ]
+                    },
+                    {
+                        name: 'Plantation',
+                        image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800',
+                        price: 399,
+                        children: [
+                            { name: 'Flower Planting', image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800', price: 249, duration: 60 },
+                            { name: 'Shrub Trimming', image: 'https://images.unsplash.com/photo-1508849789987-4e5333c12b78?w=800', price: 349, duration: 60 }
+                        ]
+                    }
+                ]
             }
         };
 
