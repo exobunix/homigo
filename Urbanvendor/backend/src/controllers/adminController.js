@@ -506,26 +506,25 @@ exports.updateProfile = async (req, res) => {
 // @access  Private
 exports.uploadProfilePhoto = async (req, res) => {
     try {
-        const cloudinary = require('cloudinary').v2;
-
-        // Configure Cloudinary
-        cloudinary.config({
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-            api_key: process.env.CLOUDINARY_API_KEY,
-            api_secret: process.env.CLOUDINARY_API_SECRET
-        });
+        const imagekit = require('../config/imagekit');
 
         if (!req.body.image) {
             return res.status(400).json({ success: false, message: 'No image provided' });
         }
 
-        // Upload to Cloudinary
-        const result = await cloudinary.uploader.upload(req.body.image, {
-            folder: 'admin_profiles',
-            transformation: [
-                { width: 500, height: 500, crop: 'fill' },
-                { quality: 'auto' }
-            ]
+        // Upload to ImageKit
+        const fileName = `admin_${Date.now()}_${Math.round(Math.random() * 1e9)}.jpg`;
+        const result = await new Promise((resolve, reject) => {
+            imagekit.upload({
+                file: req.body.image,
+                fileName: fileName,
+                folder: 'admin_profiles'
+            }, function(error, uploadResult) {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(uploadResult);
+            });
         });
 
         // Update admin profile
@@ -534,13 +533,8 @@ exports.uploadProfilePhoto = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Admin not found' });
         }
 
-        // Delete old image from Cloudinary if exists
-        if (admin.profileImage && admin.profileImage.includes('cloudinary')) {
-            const publicId = admin.profileImage.split('/').slice(-2).join('/').split('.')[0];
-            await cloudinary.uploader.destroy(publicId).catch(err => console.log('Error deleting old image:', err));
-        }
+        admin.profileImage = result.url;
 
-        admin.profileImage = result.secure_url;
         await admin.save();
 
         res.json({

@@ -1,20 +1,24 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Vendor = require('../models/Vendor');
-const cloudinary = require('../config/cloudinary');
+const imagekit = require('../config/imagekit');
 
-function uploadBufferToCloudinary(buffer, folder) {
+function uploadBufferToImageKit(buffer, folder) {
   return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
+    const fileName = `file_${Date.now()}_${Math.round(Math.random() * 1e9)}.jpg`;
+    imagekit.upload({
+      file: buffer,
+      fileName: fileName,
+      folder: folder || '/'
+    }, function(error, result) {
       if (error) {
         return reject(error);
       }
-      resolve(result);
+      resolve({ url: result.url });
     });
-
-    stream.end(buffer);
   });
 }
+
 
 function signToken(vendor) {
   const payload = { id: vendor._id };
@@ -297,17 +301,17 @@ exports.uploadProfileImage = async (req, res) => {
   }
 
   try {
-    const result = await uploadBufferToCloudinary(req.file.buffer, 'vendors/profile');
+    const result = await uploadBufferToImageKit(req.file.buffer, 'vendors/profile');
 
     const vendor = await Vendor.findByIdAndUpdate(
       req.user._id,
-      { profileImage: result.secure_url },
+      { profileImage: result.url },
       { new: true }
     );
 
     return res.json({ success: true, data: vendor, message: 'Profile image updated' });
   } catch (err) {
-    console.error('Cloudinary upload error for profile image:', err && err.message ? err.message : err);
+    console.error('ImageKit upload error for profile image:', err && err.message ? err.message : err);
     return res.status(500).json({ success: false, message: 'Image upload failed' });
   }
 };
@@ -334,26 +338,26 @@ exports.uploadKYC = async (req, res) => {
     }
 
     if (files.aadharFront && files.aadharFront[0]) {
-      const upload = await uploadBufferToCloudinary(files.aadharFront[0].buffer, 'vendors/kyc');
-      kyc.aadharFront = upload.secure_url;
+      const upload = await uploadBufferToImageKit(files.aadharFront[0].buffer, 'vendors/kyc');
+      kyc.aadharFront = upload.url;
     }
 
     if (files.aadharBack && files.aadharBack[0]) {
-      const upload = await uploadBufferToCloudinary(files.aadharBack[0].buffer, 'vendors/kyc');
-      kyc.aadharBack = upload.secure_url;
+      const upload = await uploadBufferToImageKit(files.aadharBack[0].buffer, 'vendors/kyc');
+      kyc.aadharBack = upload.url;
     }
 
     if (files.panImage && files.panImage[0]) {
-      const upload = await uploadBufferToCloudinary(files.panImage[0].buffer, 'vendors/kyc');
-      kyc.panImage = upload.secure_url;
+      const upload = await uploadBufferToImageKit(files.panImage[0].buffer, 'vendors/kyc');
+      kyc.panImage = upload.url;
     }
 
     let certificates = Array.isArray(kyc.certificates) ? kyc.certificates : [];
 
     if (files.certificates) {
       for (const file of files.certificates) {
-        const upload = await uploadBufferToCloudinary(file.buffer, 'vendors/certificates');
-        certificates.push(upload.secure_url);
+        const upload = await uploadBufferToImageKit(file.buffer, 'vendors/certificates');
+        certificates.push(upload.url);
       }
     }
 
@@ -410,12 +414,12 @@ exports.uploadImage = async (req, res) => {
       return res.status(400).json({ success: false, message: 'No image file provided' });
     }
 
-    const result = await uploadBufferToCloudinary(req.file.buffer, 'urbanvendor/services');
+    const result = await uploadBufferToImageKit(req.file.buffer, 'urbanvendor/services');
 
     res.json({
       success: true,
       data: {
-        url: result.secure_url
+        url: result.url
       }
     });
   } catch (error) {

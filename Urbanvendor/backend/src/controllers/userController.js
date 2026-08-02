@@ -108,20 +108,24 @@ exports.addAddress = async (req, res) => {
     }
 };
 
-const cloudinary = require('../config/cloudinary');
+const imagekit = require('../config/imagekit');
 
-function uploadBufferToCloudinary(buffer, folder) {
+function uploadBufferToImageKit(buffer, folder) {
     return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
+        const fileName = `file_${Date.now()}_${Math.round(Math.random() * 1e9)}.jpg`;
+        imagekit.upload({
+            file: buffer,
+            fileName: fileName,
+            folder: folder || '/'
+        }, function(error, result) {
             if (error) {
                 return reject(error);
             }
-            resolve(result);
+            resolve({ url: result.url });
         });
-
-        stream.end(buffer);
     });
 }
+
 
 // Upload Profile Image
 exports.uploadProfileImage = async (req, res) => {
@@ -130,11 +134,11 @@ exports.uploadProfileImage = async (req, res) => {
             return res.status(400).json({ success: false, message: 'No image file provided' });
         }
 
-        const result = await uploadBufferToCloudinary(req.file.buffer, 'users/profile');
+        const result = await uploadBufferToImageKit(req.file.buffer, 'users/profile');
 
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            { profileImage: result.secure_url },
+            { profileImage: result.url },
             { new: true }
         );
 
