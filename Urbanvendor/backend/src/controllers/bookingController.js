@@ -37,17 +37,19 @@ async function assignNextVendor(bookingId, io) {
     }
 
     const vendorId = candidateVendors[candidateIndex];
-    const expiresAt = new Date(Date.now() + 60000); // 1 minute from now
+    const expiresAt = new Date(Date.now() + 1800000); // 30 minutes from now (increased for reliable testing)
 
     booking.vendor = vendorId;
     booking.status = 'waiting_vendor_response';
     booking.vendorOfferExpiresAt = expiresAt;
     await booking.save();
 
-    // Notify Vendor via Socket
+    const vendor = await Vendor.findById(vendorId);
+
+    // Notify Vendor and Admin via Socket
     if (io) {
-      console.log(`Emitting new_booking_request to vendor_${vendorId}`);
-      io.to(`vendor_${vendorId}`).emit('new_booking_request', {
+      console.log(`Emitting new_booking_request to vendor_${vendorId} and admin`);
+      const bookingPayload = {
         bookingId: booking._id,
         serviceName: booking.serviceName,
         customerName: booking.customerName,
@@ -57,7 +59,26 @@ async function assignNextVendor(bookingId, io) {
         location: booking.customerLocation,
         scheduledDate: booking.scheduledDate,
         scheduledTime: booking.scheduledTime,
-        expiresAt: expiresAt.toISOString()
+        expiresAt: expiresAt.toISOString(),
+        status: booking.status,
+        vendor: {
+          _id: vendorId,
+          name: vendor ? vendor.name : 'Unknown'
+        }
+      };
+
+      // 1. Notify specific vendor
+      io.to(`vendor_${vendorId}`).emit('new_booking_request', bookingPayload);
+      
+      // 2. Notify Admins
+      io.to('admin').emit('new_booking_request', bookingPayload);
+      io.to('admin').emit('booking_update', bookingPayload);
+
+      // 3. Broadcast global update
+      io.emit('booking_update', {
+        bookingId: booking._id,
+        status: booking.status,
+        vendor: vendorId
       });
     }
 
@@ -71,7 +92,6 @@ async function assignNextVendor(bookingId, io) {
       }, { merge: true });
 
       // 🔔 Send Push Notification to Vendor
-      const vendor = await Vendor.findById(vendorId);
       if (vendor && vendor.fcmToken) {
         await sendNotification(
           vendor.fcmToken,
@@ -604,12 +624,34 @@ exports.updateBookingStatus = async (req, res, next) => {
         });
 
         // 2. Socket
-        if (io) io.to(`user_${booking.user}`).emit('booking_status_update', {
-          bookingId: booking._id,
-          status,
-          title,
-          body
-        });
+        if (io) {
+          const payload = {
+            bookingId: booking._id,
+            status,
+            title,
+            body,
+            vendorId: req.user._id,
+            vendorName: req.user.name
+          };
+
+          // Emit to user
+          io.to(`user_${booking.user}`).emit('booking_status_update', payload);
+
+          // Emit to admin
+          io.to('admin').emit('booking_status_update', payload);
+          io.to('admin').emit('booking_update', payload);
+
+          // Emit to specific vendor room
+          io.to(`vendor_${booking.vendor}`).emit('booking_status_update', payload);
+          io.to(`vendor_${booking.vendor}`).emit('booking_update', payload);
+
+          // Broadcast general update
+          io.emit('booking_update', {
+            bookingId: booking._id,
+            status,
+            vendor: booking.vendor
+          });
+        }
 
         // 3. Push
         if (user && user.fcmToken) {
