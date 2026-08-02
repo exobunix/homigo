@@ -44,7 +44,7 @@ class SocketService {
         // Socket server URL
         // Socket server URL
         let socketUrl = Platform.OS === 'web'
-            ? (__DEV__ ? 'http://localhost:3000' : 'https://urbanproxbackend.onrender.com')
+            ? (__DEV__ ? 'http://localhost:3000' : 'https://homigo-ubpu.onrender.com')
             : 'http://192.168.1.38:3000';
 
         // Use environment variable if available (Production/Vercel)

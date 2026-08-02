@@ -65,7 +65,7 @@ class SocketService {
           ? Platform.OS === 'web'
             ? 'http://localhost:3000'
             : `http://${LOCAL_IP}:3000`
-          : 'https://urbanproxbackend.onrender.com';
+          : 'https://homigo-ubpu.onrender.com';
 
     // Remove /api suffix if present for socket connection
     const cleanSocketUrl = socketUrl.endsWith('/api')

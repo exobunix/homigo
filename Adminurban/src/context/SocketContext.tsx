@@ -59,10 +59,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
                     }
 
                     return Platform.select({
-                        web: __DEV__ ? 'http://localhost:3000' : 'https://urbanproxbackend.onrender.com',
+                        web: __DEV__ ? 'http://localhost:3000' : 'https://homigo-ubpu.onrender.com',
                         android: 'http://192.168.1.48:3000',
                         ios: 'http://192.168.1.48:3000',
-                        default: 'https://urbanproxbackend.onrender.com'
+                        default: 'https://homigo-ubpu.onrender.com'
                     });
                 };
 

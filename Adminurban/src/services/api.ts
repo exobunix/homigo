@@ -13,12 +13,12 @@ const getApiUrl = () => {
     // Fallback based on Platform
     return Platform.select({
         // For web dev fallback, use localhost or PROD
-        web: __DEV__ ? 'http://localhost:3000/api' : 'https://urbanproxbackend.onrender.com/api',
+        web: __DEV__ ? 'http://localhost:3000/api' : 'https://homigo-ubpu.onrender.com/api',
         // For physical devices
         android: 'http://192.168.1.48:3000/api',
         ios: 'http://192.168.1.48:3000/api',
         // DEFAULT FALLBACK (Safety Net)
-        default: 'https://urbanproxbackend.onrender.com/api'
+        default: 'https://homigo-ubpu.onrender.com/api'
     });
 };
 

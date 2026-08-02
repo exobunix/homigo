@@ -21,7 +21,7 @@ const getBaseUrl = () => {
   }
 
   // Web fallback (Always Prod as per request)
-  return 'https://urbanproxbackend.onrender.com/api';
+  return 'https://homigo-ubpu.onrender.com/api';
 };
 
 // Ensure URL doesn't have trailing /api already

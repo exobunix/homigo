@@ -26,7 +26,7 @@ const getBaseUrl = () => {
 
     // Default Fallback
     // If we are in development mode, use localhost. Otherwise (Production/Vercel), use live backend.
-    return __DEV__ ? 'http://localhost:3000' : 'https://urbanproxbackend.onrender.com';
+    return __DEV__ ? 'http://localhost:3000' : 'https://homigo-ubpu.onrender.com';
 };
 
 // Ensure URL doesn't have trailing /api already
